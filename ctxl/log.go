@@ -3,9 +3,10 @@ package ctxl
 import (
 	"context"
 	"fmt"
+	"maps"
+
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"maps"
 )
 
 const KeyContextLoggerMeta = "KeyContextLoggerMeta"
@@ -24,7 +25,7 @@ func New(name string) func(ctx context.Context) *zerolog.Logger {
 }
 
 func SetFields(ctx context.Context, values map[string]interface{}) context.Context {
-	orig := GetFields(ctx)
+	orig := maps.Clone(values)
 	maps.Copy(orig, values)
 	return context.WithValue(ctx, KeyContextLoggerMeta, orig)
 }
